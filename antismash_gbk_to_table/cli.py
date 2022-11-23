@@ -7,35 +7,42 @@ parser = argparse.ArgumentParser(description="Parse antismash GenBank files")
 parser.add_argument(
     "-i",
     "--input",
-    metavar="filepath",
+    type = str,
     help="Path to GenBank file",
     required=True,
 )
 parser.add_argument(
     "-o",
     "--output",
-    metavar="filepath",
+    type = str,
     help="File path to write to",
     required=True,
 )
 parser.add_argument(
     "-a",
     "--append",
-    metavar="bool",
     default=False,
     help="numoutfiles file",
     required=False,
-    action=argparse.BooleanOptionalAction,
+    action="store_true",
 )
 
 parser.add_argument(
     "--header",
-    metavar="bool",
     default=False,
     help="Write column headers?",
     required=False,
-    action=argparse.BooleanOptionalAction,
+    action="store_true",
 )
+
+parser.add_argument(
+    "-s",
+    "--sampleid",
+    type = str,
+    help="Sample ID to add to output table",
+    required=False,
+)
+
 
 
 def main():
@@ -45,8 +52,10 @@ def main():
     parse_and_write(
         gbk_path_list=args.input,
         outpath=args.output,
+        sampleid=args.sampleid,
         append=args.append,
         header=args.header,
+
     )
 
 

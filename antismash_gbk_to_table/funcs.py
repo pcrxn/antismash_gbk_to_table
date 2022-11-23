@@ -69,7 +69,7 @@ def get_seqio_end(seq_feature: SeqFeature, offset: int):
     return seq_feature.location.end.real + offset
 
 
-def parse_and_write(gbk_path_list, outpath, append=False, header=False):
+def parse_and_write(gbk_path_list, outpath, sampleid, append=False, header=False):
     if append:
         write_type = "a"
     else:
@@ -77,8 +77,10 @@ def parse_and_write(gbk_path_list, outpath, append=False, header=False):
     gbk_path_list = [i for i in glob.glob(gbk_path_list)]
     with open(outpath, write_type) as handle:
         tsv_writer = csv.writer(handle, delimiter="\t")
-        if header:
+        if header and sampleid is None:
             tsv_writer.writerow(OUT_COLUMNS)
+        elif header and sampleid is not None:
+            tsv_writer.writerow(['sampleid'] + OUT_COLUMNS)
         counter = 1
         input_len = len(gbk_path_list)
         for gbk_path in gbk_path_list:
@@ -124,4 +126,4 @@ def parse_and_write(gbk_path_list, outpath, append=False, header=False):
                     )
                     results = (out_dict(i) for i in extracted_antismash_feature_info)
                     for i in results:
-                        tsv_writer.writerow([seq_record.id] + [v for v in i.values()])
+                        tsv_writer.writerow([sampleid] + [seq_record.id] + [v for v in i.values()])
