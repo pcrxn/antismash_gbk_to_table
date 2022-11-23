@@ -126,4 +126,7 @@ def parse_and_write(gbk_path_list, outpath, sampleid, append=False, header=False
                     )
                     results = (out_dict(i) for i in extracted_antismash_feature_info)
                     for i in results:
-                        tsv_writer.writerow([sampleid] + [seq_record.id] + [v for v in i.values()])
+                        if sampleid is None:
+                            tsv_writer.writerow([seq_record.id] + [v for v in i.values()])
+                        else:
+                            tsv_writer.writerow([sampleid] + [seq_record.id] + [v for v in i.values()])
